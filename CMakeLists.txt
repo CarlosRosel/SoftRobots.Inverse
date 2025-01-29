@@ -28,6 +28,8 @@ set(HEADER_FILES
     ${SRC_DIR}/component/constraint/CableEffector.inl
     ${SRC_DIR}/component/constraint/PositionEffector.h
     ${SRC_DIR}/component/constraint/PositionEffector.inl
+    ${SRC_DIR}/component/constraint/MagnetEffector.h
+    ${SRC_DIR}/component/constraint/MagnetEffector.inl
     ${SRC_DIR}/component/constraint/VolumeEffector.h
     ${SRC_DIR}/component/constraint/VolumeEffector.inl
 
@@ -89,6 +91,7 @@ set(SOURCE_FILES
     ${SRC_DIR}/component/constraint/BarycentricCenterEffector.cpp
     ${SRC_DIR}/component/constraint/CableEffector.cpp
     ${SRC_DIR}/component/constraint/PositionEffector.cpp
+    ${SRC_DIR}/component/constraint/MagnetEffector.cpp
     ${SRC_DIR}/component/constraint/VolumeEffector.cpp
 
     # ACTUATOR
@@ -162,6 +165,17 @@ target_link_libraries(${PROJECT_NAME} ${libqpOASES_LIBRARY})
 
 sofa_find_package(Sofa.Component.SolidMechanics.FEM.Elastic)
 target_link_libraries(${PROJECT_NAME} Sofa.Component.SolidMechanics.FEM.Elastic)
+<<<<<<< Updated upstream
+=======
+
+
+# Integración de Eigen
+find_package(Eigen3 REQUIRED)  #Edit
+include_directories(${EIGEN3_INCLUDE_DIR}) #Edit
+target_link_libraries(${PROJECT_NAME} Eigen3::Eigen) #Edit
+
+
+>>>>>>> Stashed changes
 
 find_package(SofaPython3 QUIET)
 if(SofaPython3_FOUND)
