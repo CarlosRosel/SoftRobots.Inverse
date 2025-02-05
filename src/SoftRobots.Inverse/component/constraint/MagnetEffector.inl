@@ -126,10 +126,10 @@ Eigen::Vector3d Calculo_B_Test(double x,double y,double z,double mu_mag_delGrafi
     //std::cerr << "Valor de length_r: " << length_r << std::endl;
 
     Vector3d r_hat = Distancia_r / length_r; // Vector unitario
-    cout << "r_hat: " << r_hat.transpose() << endl;
+    // cout << "r_hat: " << r_hat.transpose() << endl;
 
     Vector3d Mu_hat(mu_hat_x, mu_hat_y,mu_hat_z);  // Dirección del momento magnético (vector unitario)
-    cout << "Mu_hat : " << Mu_hat.transpose() << endl;
+    // cout << "Mu_hat : " << Mu_hat.transpose() << endl;
 
 
 
@@ -193,8 +193,9 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
 
         const double ajuste_x =3.75 ;
         const double ajuste_y = -5;
-        const double ajuste_z = 2.7 - 15;
-        B_calculada = Calculo_B_Test(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2]- ajuste_z ,3.81e-9,mu_x,mu_y,mu_z);
+        const double ajuste_z = 2.7;
+//        const double ajuste_z = 2.7 - 15; // Este ajuste era para corroborar calculo en c++ con el de python
+        B_calculada = Calculo_B_Test(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2],3.81e-9,mu_x,mu_y,mu_z);
         std::cout << "Campo magnético B_calculado c++: " << B_calculada.transpose() << std::endl;
     }
 
@@ -216,6 +217,7 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
 
     const auto& useDirections = sofa::helper::getReadAccessor(d_useDirections);
     const auto& directions = sofa::helper::getReadAccessor(d_directions);
+    const auto& Jacobian = sofa::helper::getReadAccessor(d_Jacobian);
     const auto& weight = sofa::helper::getReadAccessor(d_weight);
     const auto& indices = sofa::helper::getReadAccessor(d_indices);
     sofa::Index sizeIndices = indices.size();
@@ -227,12 +229,12 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
         Coord pos = x[indices[i]]; //con pos calculé B_calculado
         Coord goalPos = getTarget(effectorGoal[i],pos);
 
-        std::cout << "Pos: " << pos << std::endl; //con pos calculé B_calculado
+        std::cout << "Posicion Iman Sofa: " << pos << std::endl; //con pos calculé B_calculado
         // std::cout << "B_Calculada: " << B_calculada.transpose() << std::endl;
 
-        double B_Goal_x = goalPos[0]; // Accede al primer elemento 
-        double B_Goal_y = goalPos[1]; // Accede al segundo elemento
-        double B_Goal_z = goalPos[2]; // Accede al tercer elemento 
+        double B_Goal_x = effectorGoal[i][0]; // Accede al primer elemento
+        double B_Goal_y = effectorGoal[i][1]; // Accede al segundo elemento
+        double B_Goal_z = effectorGoal[i][2]; // Accede al tercer elemento
         // std::cout << "GoalPosx: " << B_Goal_x << std::endl;
         // std::cout << "GoalPosy: " << B_Goal_y << std::endl;
         // std::cout << "GoalPosz: " << B_Goal_z << std::endl;
@@ -245,8 +247,8 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
         // std::cout << "B_diff_z: " << B_diff_z << std::endl;
 
 
-        Eigen::Vector3d vec(B_diff_x, B_diff_y, B_diff_z);
-        // std::cout << "vector diferencia: " << vec << std::endl;
+        Eigen::Vector3d vec(-B_diff_x, -B_diff_y, -B_diff_z);
+        std::cout << "vector diferencia: " << vec << std::endl;
         pos[0] = B_calculada_x;  // Asignar un nuevo valor
         pos[1] = B_calculada_y;  // Asignar un nuevo valor
         pos[2] = B_calculada_z;  // Extraer el valor escalar
@@ -254,18 +256,20 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
         pos[4] = 0;
         pos[5] = 0;  
         pos[6] = 1;  
-        std::cout << "Pos2: " << pos << std::endl; //con pos calculé B_calculado
+//        std::cout << "Pos2: " << pos << std::endl; //con pos calculé B_calculado
         std::cout << "goalPos: " << goalPos << std::endl;
 
-        Deriv d = DataTypes::coordDifference(pos,goalPos); 
-        std::cout << "d: " << d << std::endl; //con pos calculé B_calculado
+        Deriv d = DataTypes::coordDifference(pos,goalPos);
+//        std::cout << "d: " << d << std::endl; //con pos calculé B_calculado
         // calcular diferencia entre B calculado sobre x y B medido en el sensor
 
-        for(sofa::Size j=0; j<DataTypes::Deriv::total_size; j++)
-            if(useDirections[j])
+        for(sofa::Size j=0; j<3; j++)
             {
-                Real dfree = Jdx->element(index) + d*directions[j]*weight[j];
-                // Real dfree = Jdx->element(index) + d*directions[j];
+                // Real dfree = Jdx->element(index) + d*directions[j]*weight[j];
+                std::cout << "Jacobian: " << Jacobian << std::endl; //con pos calculé B_calculado
+                std::cout << "Jdx->element " << Jdx->element(index) << std::endl;
+                Real dfree = Jdx->element(index) + vec[j];
+                std::cout << "dfree " << dfree << std::endl;
                 resV->set(constraintIndex+index, dfree);
                 index++;
             }

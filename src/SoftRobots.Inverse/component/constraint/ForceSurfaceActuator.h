@@ -106,6 +106,7 @@ protected:
     VecCoord                                  m_initialCenters;
     sofa::Data<sofa::type::vector<Real>>      d_radii;
     sofa::Data<VecDeriv>                      d_directions;
+    sofa::Data<VecDeriv>                      d_Jacobian;
     sofa::Data<bool>                          d_updateNormals;
 
     sofa::Data<sofa::type::vector<Triangle>>      d_triangles;

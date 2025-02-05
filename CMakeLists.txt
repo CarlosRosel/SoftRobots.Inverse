@@ -165,17 +165,17 @@ target_link_libraries(${PROJECT_NAME} ${libqpOASES_LIBRARY})
 
 sofa_find_package(Sofa.Component.SolidMechanics.FEM.Elastic)
 target_link_libraries(${PROJECT_NAME} Sofa.Component.SolidMechanics.FEM.Elastic)
-<<<<<<< Updated upstream
-=======
+#<<<<<<< Updated upstream
+#=======
 
 
 # Integración de Eigen
-find_package(Eigen3 REQUIRED)  #Edit
-include_directories(${EIGEN3_INCLUDE_DIR}) #Edit
-target_link_libraries(${PROJECT_NAME} Eigen3::Eigen) #Edit
+#find_package(Eigen3 REQUIRED)  #Edit
+#include_directories(${EIGEN3_INCLUDE_DIR}) #Edit
+#target_link_libraries(${PROJECT_NAME} Eigen3::Eigen) #Edit
 
 
->>>>>>> Stashed changes
+#>>>>>>> Stashed changes
 
 find_package(SofaPython3 QUIET)
 if(SofaPython3_FOUND)

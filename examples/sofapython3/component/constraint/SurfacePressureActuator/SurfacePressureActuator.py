@@ -11,7 +11,7 @@ def createScene(rootNode):
                                     ' hideWireframe')
 
     rootNode.addObject('FreeMotionAnimationLoop')
-    rootNode.addObject('QPInverseProblemSolver')
+    rootNode.addObject('QPInverseProblemSolver', printLog='True')
 
     # goal
     goal = rootNode.addChild('goal')
@@ -37,8 +37,8 @@ def createScene(rootNode):
     # bunny/effector
     effector = bunny.addChild('effector')
     effector.addObject('MechanicalObject', position=[-4.72055, 1.13543, 3.10608])
-    #effector.addObject('PositionEffector', indices=0, effectorGoal=goal.goalMO.position.linkpath)
-    effector.addObject('MagnetEffector', indices=0, effectorGoal=goal.goalMO.position.linkpath)
+    effector.addObject('PositionEffector', indices=0, effectorGoal=goal.goalMO.position.linkpath)
+    # effector.addObject('MagnetEffector', indices=0, effectorGoal=goal.goalMO.position.linkpath)
     effector.addObject('BarycentricMapping', mapForces=False, mapMasses=False)
 
     # bunny/cavity
