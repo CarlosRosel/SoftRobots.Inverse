@@ -77,6 +77,7 @@ public:
     using softrobots::constraint::MagnetModel<DataTypes>::d_indices ;
     using softrobots::constraint::MagnetModel<DataTypes>::d_directions ;
     using softrobots::constraint::MagnetModel<DataTypes>::d_Jacobian ;
+    using softrobots::constraint::MagnetModel<DataTypes>::d_PosSensor ;
     using softrobots::constraint::MagnetModel<DataTypes>::d_useDirections ;
     using softrobots::constraint::MagnetModel<DataTypes>::d_constraintIndex ;
     using softrobots::constraint::MagnetModel<DataTypes>::d_weight ;

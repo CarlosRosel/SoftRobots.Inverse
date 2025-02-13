@@ -168,11 +168,27 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
         return;
 
     SOFA_UNUSED(cParams);
-
+    const auto& PosSensor = sofa::helper::getReadAccessor(d_PosSensor);
     ReadAccessor<sofa::Data<VecCoord> > x = m_state->readPositions();
     ReadAccessor<sofa::Data<VecCoord> > effectorGoal = d_effectorGoal;
 
+
+
 // -----------------------------------------------------------------------------------------------------------------------------
+
+    std::cout << "Pos_SensorAAAAAAAAAAAAAAAAAAAAAAAAAA: " << PosSensor << std::endl;
+    double PosSensor_x = PosSensor[0][0] ;
+    std::cout << "PosSensor_x: " << PosSensor_x << std::endl;
+    double PosSensor_y = PosSensor[0][1] ;
+    std::cout << "PosSensor_y: " << PosSensor_y << std::endl;
+    double PosSensor_z = PosSensor[0][2] ;
+    std::cout << "PosSensor_z: " << PosSensor_z << std::endl;
+    double PosIman_x = PosSensor[0][3] ;
+    std::cout << "PosIman_x: " << PosIman_x << std::endl;
+    double PosIman_y = PosSensor[0][4] ;
+    std::cout << "PosIman_y: " << PosIman_y << std::endl;
+    double PosIman_z = PosSensor[0][5] ;
+    std::cout << "PosIman_z: " << PosIman_z << std::endl;
 
     // Acceder directamente al Data de 'x'
     auto& data = *x;  // Desreferenciamos el ReadAccessor para obtener el Data
@@ -228,6 +244,9 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
     {
         Coord pos = x[indices[i]]; //con pos calculé B_calculado
         Coord goalPos = getTarget(effectorGoal[i],pos);
+
+        // double PosSensor_y =
+        // double PosSensor_z =
 
         std::cout << "Posicion Iman Sofa: " << pos << std::endl; //con pos calculé B_calculado
         // std::cout << "B_Calculada: " << B_calculada.transpose() << std::endl;
