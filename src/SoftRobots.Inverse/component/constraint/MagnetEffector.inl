@@ -176,19 +176,19 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
 
 // -----------------------------------------------------------------------------------------------------------------------------
 
-    std::cout << "Pos_SensorAAAAAAAAAAAAAAAAAAAAAAAAAA: " << PosSensor << std::endl;
+    // std::cout << "Pos_Sensor: " << PosSensor << std::endl;
     double PosSensor_x = PosSensor[0][0] ;
-    std::cout << "PosSensor_x: " << PosSensor_x << std::endl;
     double PosSensor_y = PosSensor[0][1] ;
-    std::cout << "PosSensor_y: " << PosSensor_y << std::endl;
     double PosSensor_z = PosSensor[0][2] ;
-    std::cout << "PosSensor_z: " << PosSensor_z << std::endl;
     double PosIman_x = PosSensor[0][3] ;
-    std::cout << "PosIman_x: " << PosIman_x << std::endl;
     double PosIman_y = PosSensor[0][4] ;
-    std::cout << "PosIman_y: " << PosIman_y << std::endl;
     double PosIman_z = PosSensor[0][5] ;
-    std::cout << "PosIman_z: " << PosIman_z << std::endl;
+    // std::cout << "PosSensor_x: " << PosSensor_x << std::endl;
+    // std::cout << "PosSensor_y: " << PosSensor_y << std::endl;
+    // std::cout << "PosSensor_z: " << PosSensor_z << std::endl;
+    // std::cout << "PosIman_x: " << PosIman_x << std::endl;
+    // std::cout << "PosIman_y: " << PosIman_y << std::endl;
+    // std::cout << "PosIman_z: " << PosIman_z << std::endl;
 
     // Acceder directamente al Data de 'x'
     auto& data = *x;  // Desreferenciamos el ReadAccessor para obtener el Data
@@ -207,10 +207,11 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
         const double mu_y = rotation_matrix(1, 2);  // Elemento (1, 2)
         const double mu_z = rotation_matrix(2, 2);  // Elemento (2, 2)
 
-        const double ajuste_x =3.75 ;
-        const double ajuste_y = -5;
-        const double ajuste_z = 2.7;
+        const double ajuste_x = PosSensor_x ;
+        const double ajuste_y = PosSensor_y;
+        const double ajuste_z = PosSensor_z;
 //        const double ajuste_z = 2.7 - 15; // Este ajuste era para corroborar calculo en c++ con el de python
+        // std::cout << "coord : " << coord << std::endl;
         B_calculada = Calculo_B_Test(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2],3.81e-9,mu_x,mu_y,mu_z);
         std::cout << "Campo magnético B_calculado c++: " << B_calculada.transpose() << std::endl;
     }
@@ -267,7 +268,7 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
 
 
         Eigen::Vector3d vec(-B_diff_x, -B_diff_y, -B_diff_z);
-        std::cout << "vector diferencia: " << vec << std::endl;
+        // std::cout << "vector diferencia: " << vec << std::endl;
         pos[0] = B_calculada_x;  // Asignar un nuevo valor
         pos[1] = B_calculada_y;  // Asignar un nuevo valor
         pos[2] = B_calculada_z;  // Extraer el valor escalar
@@ -285,10 +286,10 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
         for(sofa::Size j=0; j<3; j++)
             {
                 // Real dfree = Jdx->element(index) + d*directions[j]*weight[j];
-                std::cout << "Jacobian: " << Jacobian << std::endl; //con pos calculé B_calculado
-                std::cout << "Jdx->element " << Jdx->element(index) << std::endl;
+                // std::cout << "Jacobian: " << Jacobian << std::endl; //con pos calculé B_calculado
+                // std::cout << "Jdx->element " << Jdx->element(index) << std::endl;
                 Real dfree = Jdx->element(index) + vec[j];
-                std::cout << "dfree " << dfree << std::endl;
+                // std::cout << "dfree " << dfree << std::endl;
                 resV->set(constraintIndex+index, dfree);
                 index++;
             }
