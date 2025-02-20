@@ -183,12 +183,12 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
     double PosIman_x = PosSensor[0][3] ;
     double PosIman_y = PosSensor[0][4] ;
     double PosIman_z = PosSensor[0][5] ;
-    std::cout << "PosSensor_x: " << PosSensor_x << std::endl;
-    std::cout << "PosSensor_y: " << PosSensor_y << std::endl;
-    std::cout << "PosSensor_z: " << PosSensor_z << std::endl;
-    std::cout << "PosIman_x: " << PosIman_x << std::endl;
-    std::cout << "PosIman_y: " << PosIman_y << std::endl;
-    std::cout << "PosIman_z: " << PosIman_z << std::endl;
+    // std::cout << "PosSensor_x: " << PosSensor_x << std::endl;
+    // std::cout << "PosSensor_y: " << PosSensor_y << std::endl;
+    // std::cout << "PosSensor_z: " << PosSensor_z << std::endl;
+    // std::cout << "PosIman_x: " << PosIman_x << std::endl;
+    // std::cout << "PosIman_y: " << PosIman_y << std::endl;
+    // std::cout << "PosIman_z: " << PosIman_z << std::endl;
 
     // Acceder directamente al Data de 'x'
     auto& data = *x;  // Desreferenciamos el ReadAccessor para obtener el Data
