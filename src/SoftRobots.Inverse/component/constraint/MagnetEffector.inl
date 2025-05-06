@@ -1,3 +1,5 @@
+constexpr double muu = 2.8937283319530448e-08;
+
 /******************************************************************************
 *                 SOFA, Simulation Open-Framework Architecture                *
 *                    (c) 2006 INRIA, USTL, UJF, CNRS, MGH                     *
@@ -212,7 +214,7 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
         const double ajuste_z = PosSensor_z;
 //        const double ajuste_z = 2.7 - 15; // Este ajuste era para corroborar calculo en c++ con el de python
         // std::cout << "coord : " << coord << std::endl;
-        B_calculada = Calculo_B_Test(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2],3.81e-9,mu_x,mu_y,mu_z);
+        B_calculada = Calculo_B_Test(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2],muu,mu_x,mu_y,mu_z);
         std::cout << "Campo magnético B_calculado c++: " << B_calculada.transpose() << std::endl;
     }
 
