@@ -1,4 +1,3 @@
-constexpr double muu = 3.691786560824152e-08;
 
 /******************************************************************************
 *                 SOFA, Simulation Open-Framework Architecture                *
@@ -119,7 +118,7 @@ void MagnetEffector<DataTypes>::resizeData()
 
 
 
-Eigen::Vector3d Calculo_B_Test(double x,double y,double z,double mu_mag_delGrafico, double mu_hat_x,double mu_hat_y,double mu_hat_z)
+Eigen::Vector3d Calculo_B_Test(double x,double y,double z,double mum, double mu_hat_x,double mu_hat_y,double mu_hat_z)
 {    
     // Definición de variables
     Vector3d Distancia_r(x, y, z);
@@ -136,7 +135,7 @@ Eigen::Vector3d Calculo_B_Test(double x,double y,double z,double mu_mag_delGrafi
 
 
     // Multiplicación por mu (magnitud)
-    Eigen::Vector3d mu = Mu_hat * mu_mag_delGrafico;
+    Eigen::Vector3d mu = Mu_hat * mum;
 
     // Producto tensorial r_hat * r_hat^T
     Eigen::Matrix3d AAA = 3 * (r_hat * r_hat.transpose()) - Eigen::Matrix3d::Identity();
@@ -171,6 +170,7 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
 
     SOFA_UNUSED(cParams);
     const auto& PosSensor = sofa::helper::getReadAccessor(d_PosSensor);
+    const auto& mum = sofa::helper::getReadAccessor(d_mum);
     ReadAccessor<sofa::Data<VecCoord> > x = m_state->readPositions();
     ReadAccessor<sofa::Data<VecCoord> > effectorGoal = d_effectorGoal;
 
@@ -214,7 +214,8 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
         const double ajuste_z = PosSensor_z;
 //        const double ajuste_z = 2.7 - 15; // Este ajuste era para corroborar calculo en c++ con el de python
         // std::cout << "coord : " << coord << std::endl;
-        B_calculada = Calculo_B_Test(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2],muu,mu_x,mu_y,mu_z);
+        B_calculada = Calculo_B_Test(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2],mum[0][0],mu_x,mu_y,mu_z);
+        // std::cout << "mum Antes de campo magneteffector.inl: " << mum[0][0] << std::endl;
         std::cout << "Campo magnético B_calculado c++: " << B_calculada.transpose() << std::endl;
     }
 
