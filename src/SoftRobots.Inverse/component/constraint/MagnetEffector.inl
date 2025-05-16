@@ -252,8 +252,8 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
         // double PosSensor_y =
         // double PosSensor_z =
 
-        std::cout << "Posicion Iman Sofa: " << pos << std::endl; //con pos calculé B_calculado
-        // std::cout << "B_Calculada: " << B_calculada.transpose() << std::endl;
+        // std::cout << "Posicion Iman Sofa: " << pos << std::endl; //con pos calculé B_calculado
+        // std::cout << "B_Calculada: "< << B_calculada.transpose() << std::endl;
 
         double B_Goal_x = effectorGoal[i][0]; // Accede al primer elemento
         double B_Goal_y = effectorGoal[i][1]; // Accede al segundo elemento
@@ -271,7 +271,7 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
 
 
         Eigen::Vector3d vec(-B_diff_x, -B_diff_y, -B_diff_z);
-        // std::cout << "vector diferencia: " << vec << std::endl;
+        std::cout << "vector diferencia: " << vec << std::endl;
         pos[0] = B_calculada_x;  // Asignar un nuevo valor
         pos[1] = B_calculada_y;  // Asignar un nuevo valor
         pos[2] = B_calculada_z;  // Extraer el valor escalar
@@ -280,7 +280,7 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
         pos[5] = 0;  
         pos[6] = 1;  
 //        std::cout << "Pos2: " << pos << std::endl; //con pos calculé B_calculado
-        std::cout << "goalPos: " << goalPos << std::endl;
+        // std::cout << "goalPos: " << goalPos << std::endl;
 
         Deriv d = DataTypes::coordDifference(pos,goalPos);
 //        std::cout << "d: " << d << std::endl; //con pos calculé B_calculado
