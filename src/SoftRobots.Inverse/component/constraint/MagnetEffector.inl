@@ -118,39 +118,73 @@ void MagnetEffector<DataTypes>::resizeData()
 
 
 
-Eigen::Vector3d Calculo_B_Test(double x,double y,double z,double mum, double mu_hat_x,double mu_hat_y,double mu_hat_z)
+Eigen::Vector3d Calculo_B_z(double x,double y,double z,double mum, double mu_hat_x,double mu_hat_y,double mu_hat_z)
 {    
     // Definición de variables
     Vector3d Distancia_r(x, y, z);
     //std::cerr << "Valor de Distancia_r: " << Distancia_r << std::endl;
     double length_r = Distancia_r.norm();  // Magnitud del vector
     //std::cerr << "Valor de length_r: " << length_r << std::endl;
-
     Vector3d r_hat = Distancia_r / length_r; // Vector unitario
     // cout << "r_hat: " << r_hat.transpose() << endl;
-
     Vector3d Mu_hat(mu_hat_x, mu_hat_y,mu_hat_z);  // Dirección del momento magnético (vector unitario)
     // cout << "Mu_hat : " << Mu_hat.transpose() << endl;
-
-
-
     // Multiplicación por mu (magnitud)
     Eigen::Vector3d mu = Mu_hat * mum;
-
     // Producto tensorial r_hat * r_hat^T
     Eigen::Matrix3d AAA = 3 * (r_hat * r_hat.transpose()) - Eigen::Matrix3d::Identity();
-
     // Multiplicamos AAA por Mu_hat y luego por mu
     Eigen::Vector3d numerador = AAA * mu;
     double denominador = 4 * M_PI * std::pow(std::abs(length_r), 3);
-
     // Campo magnético B (vector)
     Eigen::Vector3d Campo_Magnetico_resultado = numerador / denominador;
     Campo_Magnetico_resultado *= 1e15;  // Multiplicamos por 10^12 (en unidades apropiadas)
-    
-    // cout << "Campo_Magnetico_resultado: " << Campo_Magnetico_resultado.transpose() << endl;
-
-
+    return Campo_Magnetico_resultado;
+}
+Eigen::Vector3d Calculo_B_x(double x,double y,double z,double mum, double mu_hat_x,double mu_hat_y,double mu_hat_z)
+{    
+    // Definición de variables
+    Vector3d Distancia_r(x, y, z);
+    //std::cerr << "Valor de Distancia_r: " << Distancia_r << std::endl;
+    double length_r = Distancia_r.norm();  // Magnitud del vector
+    //std::cerr << "Valor de length_r: " << length_r << std::endl;
+    Vector3d r_hat = Distancia_r / length_r; // Vector unitario
+    // cout << "r_hat: " << r_hat.transpose() << endl;
+    Vector3d Mu_hat(mu_hat_x, mu_hat_y,mu_hat_z);  // Dirección del momento magnético (vector unitario)
+    // cout << "Mu_hat : " << Mu_hat.transpose() << endl;
+    // Multiplicación por mu (magnitud)
+    Eigen::Vector3d mu = Mu_hat * mum;
+    // Producto tensorial r_hat * r_hat^T
+    Eigen::Matrix3d AAA = 3 * (r_hat * r_hat.transpose()) - Eigen::Matrix3d::Identity();
+    // Multiplicamos AAA por Mu_hat y luego por mu
+    Eigen::Vector3d numerador = AAA * mu;
+    double denominador = 4 * M_PI * std::pow(std::abs(length_r), 3);
+    // Campo magnético B (vector)
+    Eigen::Vector3d Campo_Magnetico_resultado = numerador / denominador;
+    Campo_Magnetico_resultado *= 1e15;  // Multiplicamos por 10^12 (en unidades apropiadas)
+    return Campo_Magnetico_resultado;
+}
+Eigen::Vector3d Calculo_B_y(double x,double y,double z,double mum, double mu_hat_x,double mu_hat_y,double mu_hat_z)
+{    
+    // Definición de variables
+    Vector3d Distancia_r(x, y, z);
+    //std::cerr << "Valor de Distancia_r: " << Distancia_r << std::endl;
+    double length_r = Distancia_r.norm();  // Magnitud del vector
+    //std::cerr << "Valor de length_r: " << length_r << std::endl;
+    Vector3d r_hat = Distancia_r / length_r; // Vector unitario
+    // cout << "r_hat: " << r_hat.transpose() << endl;
+    Vector3d Mu_hat(mu_hat_x, mu_hat_y,mu_hat_z);  // Dirección del momento magnético (vector unitario)
+    // cout << "Mu_hat : " << Mu_hat.transpose() << endl;
+    // Multiplicación por mu (magnitud)
+    Eigen::Vector3d mu = Mu_hat * mum;
+    // Producto tensorial r_hat * r_hat^T
+    Eigen::Matrix3d AAA = 3 * (r_hat * r_hat.transpose()) - Eigen::Matrix3d::Identity();
+    // Multiplicamos AAA por Mu_hat y luego por mu
+    Eigen::Vector3d numerador = AAA * mu;
+    double denominador = 4 * M_PI * std::pow(std::abs(length_r), 3);
+    // Campo magnético B (vector)
+    Eigen::Vector3d Campo_Magnetico_resultado = numerador / denominador;
+    Campo_Magnetico_resultado *= 1e15;  // Multiplicamos por 10^12 (en unidades apropiadas)
     return Campo_Magnetico_resultado;
 }
 
@@ -197,6 +231,8 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
     // Acceder al vector que contiene los valores de las coordenadas (ya que es un vector de Vec<2, double>)
     auto& vec = data;  // 'data' es un vector de Vec<2, double>
     Eigen::Vector3d B_calculada;  // Variable global o de ámbito extendido
+    Eigen::Vector3d B_calculada_X;  // Variable global o de ámbito extendido
+    Eigen::Vector3d B_calculada_Y;  // Variable global o de ámbito extendido
 
     for (const auto& coord : vec) {
         // Acceder a todas las componentes de cada Vec<2, double> y mostrar las tres componentes si es posible
@@ -214,9 +250,14 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
         const double ajuste_z = PosSensor_z;
 //        const double ajuste_z = 2.7 - 15; // Este ajuste era para corroborar calculo en c++ con el de python
         // std::cout << "coord : " << coord << std::endl;
-        B_calculada = Calculo_B_Test(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2],mum[0][0],mu_x,mu_y,mu_z);
+        B_calculada = Calculo_B_z(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2],mum[0][2],mu_x,mu_y,mu_z);
+        B_calculada_X = Calculo_B_x(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2],mum[0][0],mu_x,mu_y,mu_z);
+        B_calculada_Y = Calculo_B_y(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2],mum[0][1],mu_x,mu_y,mu_z);
+
         // std::cout << "mum Antes de campo magneteffector.inl: " << mum[0][0] << std::endl;
-        std::cout << "Campo magnético B_calculado c++: " << B_calculada.transpose() << std::endl;
+        std::cout << "Campo magnético B_calculado c++ X: " << B_calculada_X[0] << std::endl;
+        std::cout << "Campo magnético B_calculado c++ Y: " << B_calculada_Y[1] << std::endl;
+        std::cout << "Campo magnético B_calculado c++ Z: " << B_calculada[2] << std::endl;
     }
 
 
