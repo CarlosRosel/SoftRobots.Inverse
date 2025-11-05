@@ -261,8 +261,8 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
     }
 
 
-    double B_calculada_x = B_calculada[0]; // Accede al primer elemento 
-    double B_calculada_y = B_calculada[1]; // Accede al segundo elemento
+    double B_calculada_x = B_calculada_X[0]; // Accede al primer elemento 
+    double B_calculada_y = B_calculada_Y[1]; // Accede al segundo elemento
     double B_calculada_z = B_calculada[2]; // Accede al tercer elemento 
     // std::cout << "B_calculada_x: " << B_calculada_x << std::endl;
     // std::cout << "B_calculada_y: " << B_calculada_y << std::endl;
