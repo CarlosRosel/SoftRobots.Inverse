@@ -245,6 +245,10 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
         const double mu_y = rotation_matrix(1, 2);  // Elemento (1, 2)
         const double mu_z = rotation_matrix(2, 2);  // Elemento (2, 2)
 
+        std::cout << "mu_x: " << mu_x << std::endl;
+        std::cout << "mu_y: " << mu_y << std::endl;
+        std::cout << "mu_z: " << mu_z << std::endl;
+
         const double ajuste_x = PosSensor_x ;
         const double ajuste_y = PosSensor_y;
         const double ajuste_z = PosSensor_z;
