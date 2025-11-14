@@ -219,12 +219,12 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
     double PosIman_x = PosSensor[0][3] ;
     double PosIman_y = PosSensor[0][4] ;
     double PosIman_z = PosSensor[0][5] ;
-    std::cout << "PosSensor_x: " << PosSensor_x << std::endl;
-    std::cout << "PosSensor_y: " << PosSensor_y << std::endl;
-    std::cout << "PosSensor_z: " << PosSensor_z << std::endl;
-    std::cout << "PosIman_x: " << PosIman_x << std::endl;
-    std::cout << "PosIman_y: " << PosIman_y << std::endl;
-    std::cout << "PosIman_z: " << PosIman_z << std::endl;
+    // std::cout << "PosSensor_x: " << PosSensor_x << std::endl;
+    // std::cout << "PosSensor_y: " << PosSensor_y << std::endl;
+    // std::cout << "PosSensor_z: " << PosSensor_z << std::endl;
+    // std::cout << "PosIman_x: " << PosIman_x << std::endl;
+    // std::cout << "PosIman_y: " << PosIman_y << std::endl;
+    // std::cout << "PosIman_z: " << PosIman_z << std::endl;
 
     // Acceder directamente al Data de 'x'
     auto& data = *x;  // Desreferenciamos el ReadAccessor para obtener el Data
@@ -236,7 +236,7 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
 
     for (const auto& coord : vec) {
         // Acceder a todas las componentes de cada Vec<2, double> y mostrar las tres componentes si es posible
-        msg_warning() << "Coord: (" << coord[0] << ", " << coord[1] << ", " << coord[2] << ")";  // Asumiendo que 'Vec<2, double>' tiene tres componentes
+        // msg_warning() << "Coord: (" << coord[0] << ", " << coord[1] << ", " << coord[2] << ")";  // Asumiendo que 'Vec<2, double>' tiene tres componentes
         Eigen::Quaterniond MiR(coord[6], coord[3], coord[4], coord[5]);  // (w, x, y, z)
         Eigen::Matrix3d rotation_matrix = MiR.toRotationMatrix();
         // std::cout << "Matriz de rotación:\n" << rotation_matrix << std::endl;
@@ -245,9 +245,9 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
         const double mu_y = rotation_matrix(1, 2);  // Elemento (1, 2)
         const double mu_z = rotation_matrix(2, 2);  // Elemento (2, 2)
 
-        std::cout << "mu_x: " << mu_x << std::endl;
-        std::cout << "mu_y: " << mu_y << std::endl;
-        std::cout << "mu_z: " << mu_z << std::endl;
+        // std::cout << "mu_x: " << mu_x << std::endl;
+        // std::cout << "mu_y: " << mu_y << std::endl;
+        // std::cout << "mu_z: " << mu_z << std::endl;
 
         const double ajuste_x = PosSensor_x ;
         const double ajuste_y = PosSensor_y;
