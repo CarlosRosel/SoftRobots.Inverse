@@ -219,12 +219,12 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
     double PosIman_x = PosSensor[0][3] ;
     double PosIman_y = PosSensor[0][4] ;
     double PosIman_z = PosSensor[0][5] ;
-    // std::cout << "PosSensor_x: " << PosSensor_x << std::endl;
-    // std::cout << "PosSensor_y: " << PosSensor_y << std::endl;
-    // std::cout << "PosSensor_z: " << PosSensor_z << std::endl;
-    // std::cout << "PosIman_x: " << PosIman_x << std::endl;
-    // std::cout << "PosIman_y: " << PosIman_y << std::endl;
-    // std::cout << "PosIman_z: " << PosIman_z << std::endl;
+    std::cout << "PosSensor_x: " << PosSensor_x << std::endl;
+    std::cout << "PosSensor_y: " << PosSensor_y << std::endl;
+    std::cout << "PosSensor_z: " << PosSensor_z << std::endl;
+    std::cout << "PosIman_x: " << PosIman_x << std::endl;
+    std::cout << "PosIman_y: " << PosIman_y << std::endl;
+    std::cout << "PosIman_z: " << PosIman_z << std::endl;
 
     // Acceder directamente al Data de 'x'
     auto& data = *x;  // Desreferenciamos el ReadAccessor para obtener el Data
@@ -236,7 +236,7 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
 
     for (const auto& coord : vec) {
         // Acceder a todas las componentes de cada Vec<2, double> y mostrar las tres componentes si es posible
-        // msg_warning() << "Coord: (" << coord[0] << ", " << coord[1] << ", " << coord[2] << ")";  // Asumiendo que 'Vec<2, double>' tiene tres componentes
+        msg_warning() << "Coord: (" << coord[0] << ", " << coord[1] << ", " << coord[2] << ")";  // Asumiendo que 'Vec<2, double>' tiene tres componentes
         Eigen::Quaterniond MiR(coord[6], coord[3], coord[4], coord[5]);  // (w, x, y, z)
         Eigen::Matrix3d rotation_matrix = MiR.toRotationMatrix();
         // std::cout << "Matriz de rotación:\n" << rotation_matrix << std::endl;
@@ -254,9 +254,9 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
         const double ajuste_z = PosSensor_z;
 //        const double ajuste_z = 2.7 - 15; // Este ajuste era para corroborar calculo en c++ con el de python
         // std::cout << "coord : " << coord << std::endl;
-        B_calculada = Calculo_B_z(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2],mum[0][2],mu_x,mu_y,mu_z);
-        B_calculada_X = Calculo_B_x(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2],mum[0][0],mu_x,mu_y,mu_z);
-        B_calculada_Y = Calculo_B_y(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2],mum[0][1],mu_x,mu_y,mu_z);
+        B_calculada = Calculo_B_z(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2]-ajuste_z,mum[0][2],mu_x,mu_y,mu_z);
+        B_calculada_X = Calculo_B_x(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2]-ajuste_z,mum[0][0],mu_x,mu_y,mu_z);
+        B_calculada_Y = Calculo_B_y(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2]-ajuste_z,mum[0][1],mu_x,mu_y,mu_z);
 
         // std::cout << "mum Antes de campo magneteffector.inl: " << mum[0][0] << std::endl;
         std::cout << "Campo magnético B_calculado c++ X: " << B_calculada_X[0] << std::endl;
