@@ -66,4 +66,4 @@ template class SOFA_SOFTROBOTS_INVERSE_API MagnetEffector<sofa::defaulttype::Vec
 template class SOFA_SOFTROBOTS_INVERSE_API MagnetEffector<sofa::defaulttype::Rigid3Types>;
 
 
-} // namespace
+} // namespace.

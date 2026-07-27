@@ -245,18 +245,18 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
         const double mu_y = rotation_matrix(1, 2);  // Elemento (1, 2)
         const double mu_z = rotation_matrix(2, 2);  // Elemento (2, 2)
 
-        // std::cout << "mu_x: " << mu_x << std::endl;
-        // std::cout << "mu_y: " << mu_y << std::endl;
-        // std::cout << "mu_z: " << mu_z << std::endl;
+        std::cout << "mu_x: " << mu_x << std::endl;
+        std::cout << "mu_y: " << mu_y << std::endl;
+        std::cout << "mu_z: " << mu_z << std::endl;
 
         const double ajuste_x = PosSensor_x ;
         const double ajuste_y = PosSensor_y;
         const double ajuste_z = PosSensor_z;
 //        const double ajuste_z = 2.7 - 15; // Este ajuste era para corroborar calculo en c++ con el de python
-        // std::cout << "coord : " << coord << std::endl;
+        std::cout << "coord : " << coord << std::endl;
         B_calculada = Calculo_B_z(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2]-ajuste_z,mum[0][2],mu_x,mu_y,mu_z);
         B_calculada_X = Calculo_B_x(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2]-ajuste_z,mum[0][0],mu_x,mu_y,mu_z);
-        B_calculada_Y = Calculo_B_y(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2]-ajuste_z,mum[0][1],mu_x,mu_y,mu_z);
+        B_calculada_Y = Calculo_B_y(coord[0]- ajuste_x,coord[1]- ajuste_y,coord[2]-ajuste_z,msum[0][1],mu_x,mu_y,mu_z);
 
         // std::cout << "mum Antes de campo magneteffector.inl: " << mum[0][0] << std::endl;
         std::cout << "Campo magnético B_calculado c++ X: " << B_calculada_X[0] << std::endl;
@@ -303,16 +303,16 @@ void MagnetEffector<DataTypes>::getConstraintViolation(const sofa::core::Constra
         double B_Goal_x = effectorGoal[i][0]; // Accede al primer elemento
         double B_Goal_y = effectorGoal[i][1]; // Accede al segundo elemento
         double B_Goal_z = effectorGoal[i][2]; // Accede al tercer elemento
-        // std::cout << "GoalPosx: " << B_Goal_x << std::endl;
-        // std::cout << "GoalPosy: " << B_Goal_y << std::endl;
-        // std::cout << "GoalPosz: " << B_Goal_z << std::endl;
+        std::cout << "GoalPosx: " << B_Goal_x << std::endl;
+        std::cout << "GoalPosy: " << B_Goal_y << std::endl;
+        std::cout << "GoalPosz: " << B_Goal_z << std::endl;
 
         double B_diff_x = B_Goal_x - B_calculada_x; 
         double B_diff_y = B_Goal_y - B_calculada_y;    
         double B_diff_z = B_Goal_z - B_calculada_z; 
-        // std::cout << "B_diff_x: " << B_diff_x << std::endl;
-        // std::cout << "B_diff_y: " << B_diff_y << std::endl;
-        // std::cout << "B_diff_z: " << B_diff_z << std::endl;
+        std::cout << "B_diff_x: (G-C)" << B_diff_x << std::endl;
+        std::cout << "B_diff_y: (G-C)" << B_diff_y << std::endl;
+        std::cout << "B_diff_z: (G-C)" << B_diff_z << std::endl;
 
 
         Eigen::Vector3d vec(-B_diff_x, -B_diff_y, -B_diff_z);
