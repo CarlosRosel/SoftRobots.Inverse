@@ -30,7 +30,7 @@
 #include <SoftRobots.Inverse/component/config.h>
 #include <sofa/core/ObjectFactory.h>
 #include <SoftRobots.Inverse/component/constraint/MagnetEffector.inl>
-
+  
 namespace softrobotsinverse::constraint
 {
 
